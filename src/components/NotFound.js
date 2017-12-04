@@ -1,3 +1,5 @@
 import React from 'react';
 
-export default () => (<h4>404 Not Found</h4>);
+const NotFound = () => (<h1 className='text-center'>404 Not Found</h1>);
+
+export default NotFound;

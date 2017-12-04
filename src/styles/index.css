@@ -76,3 +76,7 @@
 .submit-button:not(.busy) > img {
   display: none;
 }
+
+.tasks-list {
+  padding: 15px;
+}

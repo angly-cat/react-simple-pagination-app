@@ -4,7 +4,6 @@ import TextInput from './inputs/TextInput';
 import StatusInput from './inputs/StatusInput';
 import blueLoader from '../images/blue-loader.gif';
 
-
 class TaskForm extends Component {
   renderResetButton = (fieldName, wrapperClassName) => {
     const shouldBeShown = this.props.originalTask && this.props.originalTask[fieldName] !== this.props.task[fieldName];

@@ -15,7 +15,7 @@ const emptyTask = {
   image_path: null
 };
 
-class AddTask extends Component {
+class UpsertTask extends Component {
   state = {
     task: {
       ...emptyTask,
@@ -142,7 +142,7 @@ class AddTask extends Component {
   render() {
     return (
       <div>
-        <h1>Task Creation</h1>
+        <h1 className='text-center'>Task Creation</h1>
         <div className='row'>
           <div className='col'>
             <TaskForm
@@ -166,8 +166,8 @@ class AddTask extends Component {
     );
   }
 }
-AddTask.contextTypes = {
+UpsertTask.contextTypes = {
   flash: PropTypes.func
 };
 
-export default AddTask;
+export default UpsertTask;

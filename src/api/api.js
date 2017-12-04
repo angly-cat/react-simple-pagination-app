@@ -1,4 +1,4 @@
-import { ALL_TASKS_URL, CREATE_TASK_URL, getEditTaskUrlById } from './constants';
+import { getAllTasksUrl, CREATE_TASK_URL, getEditTaskUrlById } from './constants';
 
 export function createTask({ username, email, text }, imageBlob, imageName) {
   const form = new FormData();
@@ -23,4 +23,14 @@ export function createTask({ username, email, text }, imageBlob, imageName) {
     });
 }
 
-
+export function getTasks({ page } = { page: 1 }) {
+  return fetch(getAllTasksUrl({ page }))
+  .then((res) => res.json())
+  .then((responseJSON) => {
+    if (responseJSON.status === 'error') {
+      throw responseJSON;
+    } else {
+      return responseJSON;
+    }
+  });
+}
