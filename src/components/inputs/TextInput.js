@@ -7,13 +7,14 @@ const TextInput = ({ fieldName, fieldValue, updateTextField, children }) => {
       <label htmlFor={`${fieldName}-input`}>{fieldNameWithCapital}</label>
       <div className='input-group'>
         <input
-          type='text'
+          type={fieldName === 'email' ? 'email' : 'text'}
           className='form-control'
           id={`${fieldName}-input`}
           data-field={fieldName}
           placeholder={`Enter ${fieldName}`}
           value={fieldValue}
           onChange={updateTextField}
+          required
         />
         {children}
       </div>

@@ -23,7 +23,7 @@ class TaskForm extends Component {
   };
 
   render() {
-    const { fileIndex, isBusy, task, updateImage, updateStatus, updateTextField, upsertTask } = this.props;
+    const { fileIndex, isBusy, originalTask, task, updateImage, updateStatus, updateTextField, upsertTask } = this.props;
     return (
       <form onSubmit={upsertTask}>
         <ImageInput
@@ -42,12 +42,14 @@ class TaskForm extends Component {
             {this.renderResetButton(fieldName, 'input-group-btn')}
           </TextInput>
         ))}
-        <StatusInput
-          status={task.status}
-          updateStatus={updateStatus}
-        >
-          {this.renderResetButton('status', 'col-auto')}
-        </StatusInput>
+        {originalTask &&
+          <StatusInput
+            status={task.status}
+            updateStatus={updateStatus}
+          >
+            {this.renderResetButton('status', 'col-auto')}
+          </StatusInput>
+        }
         <button
           type='submit'
           className={`${isBusy ? 'busy ' : ' '}submit-button btn btn-primary`}

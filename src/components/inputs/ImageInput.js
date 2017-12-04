@@ -13,6 +13,7 @@ const ImageInput = (props) => {
           id='image-input'
           data-field='text'
           onChange={props.updateImage}
+          required
         />
         {props.children}
       </div>
