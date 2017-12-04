@@ -1,12 +1,13 @@
 import { ALL_TASKS_URL, CREATE_TASK_URL, getEditTaskUrlById } from './constants';
 
-export function createTask({ username, email, text, status }, imageBlob, imageName) {
+export function createTask({ username, email, text }, imageBlob, imageName) {
   const form = new FormData();
   form.append('username', username);
   form.append('email', email);
   form.append('text', text);
-  form.append('status', status);
-  form.append('image', imageBlob, imageName);
+  if (imageBlob) {
+    form.append('image', imageBlob, imageName);
+  }
 
   return fetch(CREATE_TASK_URL, {
     method: 'POST',

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TaskForm from './TaskForm';
 import Task from './Task';
 import { createTask } from '../api/api';
@@ -113,23 +114,25 @@ class AddTask extends Component {
     });
 
     createTask(this.state.task, this.state.imageBlob, this.state.imageName)
-      .then((json) => console.log(json))
       .then(() => {
-        this.setState((prevState) => {
-          window.URL.revokeObjectURL(prevState.task.image_path);
-          return {
-            isUpserting: false,
-            task: {
-              ...emptyTask
-            },
-            fileIndex: prevState.fileIndex + 1,
-            imageBlob: null,
-            imageName: null
-          };
+        window.URL.revokeObjectURL(this.state.task.image_path);
+
+        this.context.flash({
+          text: 'Task created successfully!',
+          type: 'success',
+          actualOnPattern: /\/list\/1/
         });
+
+        this.props.history.push('/list/1');
       })
-      .catch((error) => console.error(error))
-      .then(() => {
+      .catch((error) => {
+        this.context.flash({
+          text: JSON.stringify(error.message || error),
+          type: 'danger',
+          topic: 'errorOnCreation',
+          actualOnPattern: /\/create/
+        });
+
         this.setState({
           isUpserting: false
         });
@@ -163,5 +166,8 @@ class AddTask extends Component {
     );
   }
 }
+AddTask.contextTypes = {
+  flash: PropTypes.func
+};
 
 export default AddTask;

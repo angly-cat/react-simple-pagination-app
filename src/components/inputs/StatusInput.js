@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StatusInput = ({ status, updateStatus, children }) => {
+const StatusInput = ({ status, updateStatus, children, disabled }) => {
   return (
     <div className='form-check min-h-40'>
       <div className="row no-gutters justify-content-between">
@@ -11,6 +11,7 @@ const StatusInput = ({ status, updateStatus, children }) => {
               className='form-check-input'
               checked={status === 10}
               onChange={updateStatus}
+              disabled={disabled}
             />
             Done
           </label>

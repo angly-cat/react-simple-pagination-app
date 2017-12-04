@@ -1,21 +1,21 @@
 import React from 'react';
 
-const ImageInput = (props) => {
+const ImageInput = ({ fileIndex, updateImage, disabled, children }) => {
   return (
     <div className='form-group'>
       <label htmlFor='image-input'>Image</label>
       <div className='input-group'>
         <input
-          key={props.fileIndex}
+          key={fileIndex}
           type='file'
           className='form-control'
           accept='image/*'
           id='image-input'
           data-field='text'
-          onChange={props.updateImage}
-          required
+          onChange={updateImage}
+          disabled={disabled}
         />
-        {props.children}
+        {children}
       </div>
     </div>
   );

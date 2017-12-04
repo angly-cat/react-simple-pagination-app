@@ -3,6 +3,11 @@
   outline: none;
 }
 
+.container {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 .card-img {
   align-items: center;
   display: flex;
