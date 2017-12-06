@@ -14,7 +14,6 @@ class TaskList extends Component {
     pagesTotal: null
   };
 
-
   fetchTasksByPage = (page) => {
     this.setState({
       loading: true

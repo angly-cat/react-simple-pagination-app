@@ -52,7 +52,7 @@ class Task extends Component {
 
 const mapStateToProps = ({ user }, { location }) => {
   return {
-    shouldShowEditButton: user && !location.pathname.match(/^\/edit\//)
+    shouldShowEditButton: user && !location.pathname.match(/^\/create|edit\//)
   };
 };
 

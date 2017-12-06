@@ -1,4 +1,4 @@
-import { SIGN_IN_USER, SIGN_OUT_USER, SET_SELECTED_TASK } from '.';
+import { SIGN_IN_USER, SIGN_OUT_USER, SET_SELECTED_TASK, ADD_FLASH_MESSAGE, REMOVE_FLASH_MESSAGE } from '.';
 
 export function signInUser(user) {
   return {
@@ -20,3 +20,16 @@ export function setSelectedTask(task) {
   };
 }
 
+export function addFlashMessage(message) {
+  return {
+    type: ADD_FLASH_MESSAGE,
+    message
+  };
+}
+
+export function removeFlashMessage(id) {
+  return {
+    type: REMOVE_FLASH_MESSAGE,
+    id
+  };
+}

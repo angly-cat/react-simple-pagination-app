@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextInput from './inputs/TextInput';
 import { login } from '../api/index';
 import blueLoader from '../images/blue-loader.gif';
-import { signInUser } from '../store/actions/creators';
+import { addFlashMessage, signInUser } from '../store/actions/creators';
 
 class LoginForm extends Component {
   state = {
@@ -33,11 +32,10 @@ class LoginForm extends Component {
     .then((user) => {
       const nextRoute = '/list/1';
 
-      this.context.flash({
+      this.props.addFlashMessage({
         text: 'Signed in successfully!',
         type: 'success',
-        topic: 'userSigning',
-        actualOnPattern: nextRoute
+        topic: 'userSigning'
       });
 
       this.props.signInUser(user);
@@ -45,11 +43,10 @@ class LoginForm extends Component {
       this.props.history.push(nextRoute);
     })
     .catch((error) => {
-      this.context.flash({
+      this.props.addFlashMessage({
         text: error,
         type: 'danger',
-        topic: 'invalidCredentials',
-        actualOnPattern: this.props.location.pathname
+        topic: 'invalidCredentials'
       });
 
       this.setState({
@@ -60,16 +57,13 @@ class LoginForm extends Component {
 
   componentWillMount() {
     if (this.props.user) {
-      const nextRoute = '/list/1';
-
-      this.context.flash({
+      this.props.addFlashMessage({
         text: 'User is already signed in!',
         type: 'info',
-        topic: 'userSigning',
-        actualOnPattern: nextRoute
+        topic: 'userSigning'
       });
 
-      this.props.history.push(nextRoute);
+      this.props.history.push('/list/1');
     }
   }
 
@@ -101,9 +95,6 @@ class LoginForm extends Component {
     );
   }
 }
-LoginForm.contextTypes = {
-  flash: PropTypes.func
-};
 
 const mapStateToProps = ({ user }) => {
   return {
@@ -113,7 +104,8 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signInUser: (user) => dispatch(signInUser(user))
+    signInUser: (user) => dispatch(signInUser(user)),
+    addFlashMessage: (id) => dispatch(addFlashMessage(id))
   };
 };
 

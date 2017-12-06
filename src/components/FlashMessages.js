@@ -1,24 +1,38 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { removeFlashMessage } from '../store/actions/creators';
 
 class FlashMessages extends Component {
+  handleClosing = ({ target }) => {
+    this.props.removeFlashMessage(+target.dataset.id);
+  };
+
   render() {
     return (
       <div>
-        {this.context.flashMessages.map((message) =>
+        {this.props.flashMessages.map((message) =>
           <div key={message.id} className={`alert alert-${message.type} alert-dismissible fade show`}>
             {message.text}
-            <button type='button' className='close' data-id={message.id} onClick={this.context.closeFlashMessage}>
+            <button type='button' className='close' data-id={message.id} onClick={this.handleClosing}>
               <span>&times;</span>
             </button>
-          </div>)}
+          </div>
+        )}
       </div>
     );
   }
 }
-FlashMessages.contextTypes = {
-  flashMessages: PropTypes.array,
-  closeFlashMessage: PropTypes.func
+
+const mapStateToProps = ({ flashMessages }) => {
+  return {
+    flashMessages
+  };
 };
 
-export default FlashMessages;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeFlashMessage: (id) => dispatch(removeFlashMessage(id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlashMessages);

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TaskForm from './TaskForm';
 import Task from './Task';
 import { createTask, updateTask } from '../api';
+import { addFlashMessage } from '../store/actions/creators';
 
 const MAX_IMAGE_WIDTH = 320;
 const MAX_IMAGE_HEIGHT = 240;
@@ -21,7 +21,7 @@ class UpsertTask extends Component {
   state = {
     task: {
       ...emptyTask,
-      ...this.props.selectedTask
+      ...this.props.isEditing && this.props.selectedTask
     },
     imageName: null,
     imageBlob: null,
@@ -122,20 +122,18 @@ class UpsertTask extends Component {
 
         const nextRoute = '/list/1';
 
-        this.context.flash({
+        this.props.addFlashMessage({
           text: `Task ${this.props.isEditing ? 'updated' : 'created'} successfully!`,
-          type: 'success',
-          actualOnPattern: nextRoute
+          type: 'success'
         });
 
         this.props.history.push(nextRoute);
       })
       .catch((error) => {
-        this.context.flash({
+        this.props.addFlashMessage({
           text: JSON.stringify(error.message || error),
           type: 'danger',
-          topic: this.props.isEditing ? 'errorOnEditing' : 'errorOnCreation',
-          actualOnPattern: this.props.location.pathname
+          topic: this.props.isEditing ? 'errorOnEditing' : 'errorOnCreation'
         });
 
         this.setState({
@@ -152,10 +150,9 @@ class UpsertTask extends Component {
     ) {
       const nextRoute = '/list/1';
 
-      this.context.flash({
+      this.props.addFlashMessage({
         text: `Can't find task with id=${this.props.match.params.taskId} in cache.`,
-        type: 'warning',
-        actualOnPattern: nextRoute
+        type: 'warning'
       });
 
       this.props.history.push(nextRoute);
@@ -165,14 +162,14 @@ class UpsertTask extends Component {
   render() {
     return (
       <div>
-        <h1 className='text-center'>{this.props.selectedTask ? 'Task Editing' : 'Task Creation'}</h1>
+        <h1 className='text-center'>{this.props.isEditing ? 'Task Editing' : 'Task Creation'}</h1>
         <div className='row'>
           <div className='col'>
             <TaskForm
               upsertTask={this.upsertTask}
               task={this.state.task}
               fileIndex={this.state.fileIndex}
-              originalTask={this.props.selectedTask}
+              originalTask={this.props.isEditing && this.props.selectedTask}
               updateTextField={this.updateTextField}
               updateStatus={this.updateStatus}
               updateImage={this.updateImage}
@@ -189,15 +186,11 @@ class UpsertTask extends Component {
     );
   }
 }
-UpsertTask.contextTypes = {
-  flash: PropTypes.func
-};
 
-const mapStateToProps = ({ selectedTask }, { location }) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    selectedTask,
-    isEditing: location.pathname.match(/^\/edit\//)
+    addFlashMessage: (id) => dispatch(addFlashMessage(id))
   };
 };
 
-export default withRouter(connect(mapStateToProps)(UpsertTask));
+export default withRouter(connect(null, mapDispatchToProps)(UpsertTask));
