@@ -80,3 +80,8 @@
 .tasks-list {
   padding: 15px;
 }
+
+.sorting-button {
+  margin-left: 5px;
+  margin-right: 5px;
+}

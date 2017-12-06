@@ -57,8 +57,8 @@ export function updateTask({ text, status, id }) {
   });
 }
 
-export function getTasks({ page } = { page: 1 }) {
-  return fetch(getAllTasksUrl({ page }))
+export function getTasks({ page = 1, sort_field, sort_direction }) {
+  return fetch(getAllTasksUrl({ page, sort_field, sort_direction }))
   .then((res) => res.json())
   .then((responseJSON) => {
     if (responseJSON.status === 'error') {

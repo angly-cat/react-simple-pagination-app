@@ -11,14 +11,16 @@ class TaskList extends Component {
   state = {
     loading: true,
     tasks: [],
-    pagesTotal: null
+    pagesTotal: null,
+    sortingField: null,
+    sortingOrder: null
   };
 
-  fetchTasksByPage = (page) => {
+  fetchTasks = (page, sortingField, sortingOrder) => {
     this.setState({
       loading: true
     });
-    getTasks({ page })
+    getTasks({ page, sort_field: sortingField, sort_direction: sortingOrder })
       .then(({ message: { tasks, total_task_count }}) => {
         this.setState({
           loading: false,
@@ -28,18 +30,52 @@ class TaskList extends Component {
     });
   };
 
+  setSorting = ({ target }) => {
+    if (this.state.sortingField !== target.dataset.field) {
+      this.setState({
+        sortingField: target.dataset.field,
+        sortingOrder: 'asc'
+      });
+    } else {
+      this.setState((prevState) => {
+        return {
+          sortingOrder: prevState.sortingOrder === 'asc' ? 'desc' : 'asc'
+        };
+      });
+    }
+  };
+
   componentDidMount() {
-    this.fetchTasksByPage(+this.props.match.params.page);
+    this.fetchTasks(+this.props.match.params.page);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchTasksByPage(+nextProps.match.params.page);
+    this.fetchTasks(+nextProps.match.params.page);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.sortingField !== this.state.sortingField || nextState.sortingOrder !== this.state.sortingOrder) {
+      this.fetchTasks(+nextProps.match.params.page, nextState.sortingField, nextState.sortingOrder);
+    }
   }
 
   render() {
     return (
       <div>
         <h1 className='text-center'>TaskList</h1>
+        <div>
+          Sort by:
+          {['id', 'username', 'email', 'status'].map((fieldName) =>
+            <button
+              key={fieldName}
+              className={`btn sorting-button btn-${this.state.sortingField === fieldName ? 'secondary' : 'light'} btn-sm`}
+              data-field={fieldName}
+              onClick={this.setSorting}
+            >
+              {fieldName}{this.state.sortingField === fieldName ? (this.state.sortingOrder === 'asc' ? '↑' : '↓') : null}
+            </button>
+          )}
+        </div>
         <div className='row justify-content-around tasks-list'>
           {this.state.loading
             ? <img src={bigWhiteLoader} alt='Loading Indicator' />
