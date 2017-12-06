@@ -3,7 +3,7 @@ import React from 'react';
 const StatusInput = ({ status, updateStatus, children, disabled }) => {
   return (
     <div className='form-check min-h-40'>
-      <div className="row no-gutters justify-content-between">
+      <div className='row no-gutters justify-content-between'>
         <div className='col-auto'>
           <label className='form-check-label col-auto'>
             <input
