@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LogoutButton from './LogoutButton';
+
+const isList = (match, location) => location.pathname.match(/^\/list\//);
 
 const Header = (props) => {
   return (
@@ -12,7 +14,7 @@ const Header = (props) => {
 
       <div className='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul className='navbar-nav mr-auto'>
-          <NavLink exact to='/list/1' className='nav-item'>
+          <NavLink to='/list/1' className='nav-item' isActive={isList}>
             <span className='nav-link'>List</span>
           </NavLink>
           <NavLink exact to='/create' className='nav-item'>
@@ -38,4 +40,4 @@ const mapStateToProps = ({ user }) => {
   };
 };
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));
