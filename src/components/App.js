@@ -5,7 +5,7 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import TaskList from './TaskList';
 import UpsertTask from './UpsertTask';
 import NotFound from './NotFound';
-
+import LoginForm from "./LoginForm";
 
 class App extends Component {
   render() {
@@ -18,6 +18,7 @@ class App extends Component {
             <Route exact path='/list/:page' component={TaskList}/>
             <Route exact path='/create' component={UpsertTask}/>
             <Route exact path='/edit/:id' component={UpsertTask}/>
+            <Route exact path='/login' component={LoginForm}/>
             <Route component={NotFound}/>
           </Switch>
         </ContentWithFlashMessages>

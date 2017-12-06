@@ -1,4 +1,4 @@
-import { getAllTasksUrl, CREATE_TASK_URL, getEditTaskUrlById } from './constants';
+import { getAllTasksUrl, CREATE_TASK_URL, getEditTaskUrlById } from './urls';
 
 export function createTask({ username, email, text }, imageBlob, imageName) {
   const form = new FormData();
@@ -32,5 +32,17 @@ export function getTasks({ page } = { page: 1 }) {
     } else {
       return responseJSON;
     }
+  });
+}
+
+export function login({ username, password }) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (username === 'Admin' && password === '123') {
+        resolve({ username: 'Admin' });
+      } else {
+        reject('Invalid credentials!');
+      }
+    }, 500 + 1500*Math.random());
   });
 }

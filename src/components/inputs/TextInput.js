@@ -7,7 +7,7 @@ const TextInput = ({ fieldName, fieldValue, updateTextField, disabled, children 
       <label htmlFor={`${fieldName}-input`}>{fieldNameWithCapital}</label>
       <div className='input-group'>
         <input
-          type={fieldName === 'email' ? 'text' : 'text'}
+          type={(fieldName === 'email' || fieldName === 'password') ? fieldName : 'text'}
           className='form-control'
           id={`${fieldName}-input`}
           data-field={fieldName}
@@ -15,6 +15,7 @@ const TextInput = ({ fieldName, fieldValue, updateTextField, disabled, children 
           value={fieldValue}
           onChange={updateTextField}
           disabled={disabled}
+          required
         />
         {children}
       </div>

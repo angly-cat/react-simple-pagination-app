@@ -63,7 +63,7 @@ class ContentWithFlashMessages extends Component {
     return (
       <main className='container'>
         <div>
-          {this.state.messages.map((message, index) =>
+          {this.state.messages.map((message) =>
             <div key={message.id} className={`alert alert-${message.type} alert-dismissible fade show`}>
               {message.text}
               <button type='button' className='close' data-id={message.id} onClick={this.closeMessage}>
