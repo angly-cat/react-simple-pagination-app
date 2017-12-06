@@ -5,7 +5,7 @@ const selectedTaskReducer = (state = defaultState.flashMessages, action) => {
   switch(action.type) {
   case ADD_FLASH_MESSAGE:
     return [
-      ...state,
+      ...state.filter((message) => !action.message.topic || message.topic !== action.message.topic),
       {
         ...action.message,
         id: Math.max(...state.map((message) => message.id), -1) + 1

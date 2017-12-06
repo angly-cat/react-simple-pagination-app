@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {addFlashMessage, signOutUser} from '../store/actions/creators';
+import { addFlashMessage, signOutUser } from '../store/actions/creators';
 
 class LogoutButton extends Component {
   handleSignOut = () => {
@@ -16,7 +16,7 @@ class LogoutButton extends Component {
 
   render() {
     return (
-      <a className='nav-item' onClick={this.handleSignOut}>
+      <a className='nav-item logout-button' onClick={this.handleSignOut}>
         <span className='nav-link'>Logout</span>
       </a>
     );

@@ -3,7 +3,7 @@ import { LOCAL_STORAGE_USER_KEY } from '../constants';
 let defaultState = {
   user: null,
   selectedTask: null,
-  flashMessages: [],
+  flashMessages: []
 };
 
 try {

@@ -19,7 +19,13 @@ const Pagination = ({ currentPage, pagesTotal }) => {
             Previous
           </Link>
         </li>
-        {pageButtons.map((page) => <NavLink key={page} className='page-item' to={`/list/${page}`}><span className='page-link'>{page}</span></NavLink>)}
+        {pageButtons.map((page) => (
+          <NavLink key={page} className='page-item' to={`/list/${page}`}>
+            <span className='page-link'>
+              {page}
+            </span>
+          </NavLink>
+        ))}
         <li className={`${!(currentPage < pagesTotal) ? 'disabled ' : ''}page-item`}>
           <Link className='page-link' to={`/list/${currentPage + 1}`}>
             Next

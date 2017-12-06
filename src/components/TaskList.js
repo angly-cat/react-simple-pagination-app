@@ -12,8 +12,8 @@ class TaskList extends Component {
     loading: true,
     tasks: [],
     pagesTotal: null,
-    sortingField: null,
-    sortingOrder: null
+    sortingField: 'id',
+    sortingOrder: 'desc'
   };
 
   fetchTasks = (page, sortingField, sortingOrder) => {
@@ -46,11 +46,11 @@ class TaskList extends Component {
   };
 
   componentDidMount() {
-    this.fetchTasks(+this.props.match.params.page);
+    this.fetchTasks(+this.props.match.params.page, this.state.sortingField, this.state.sortingOrder);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchTasks(+nextProps.match.params.page);
+    this.fetchTasks(+nextProps.match.params.page, this.state.sortingField, this.state.sortingOrder);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -79,7 +79,7 @@ class TaskList extends Component {
         <div className='row justify-content-around tasks-list'>
           {this.state.loading
             ? <img src={bigWhiteLoader} alt='Loading Indicator' />
-            : this.state.tasks.map((task) => <Task key={task.id} task={task}/>)
+            : this.state.tasks.map((task) => <Task key={task.id} task={task} />)
           }
         </div>
         {this.state.pagesTotal &&

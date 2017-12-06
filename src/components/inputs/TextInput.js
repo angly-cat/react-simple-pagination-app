@@ -15,7 +15,7 @@ const TextInput = ({ fieldName, fieldValue, updateTextField, disabled, children,
           value={fieldValue}
           onChange={updateTextField}
           disabled={disabled}
-          {...required && {required: true}}
+          {...required && { required: true }}
         />
         {children}
       </div>

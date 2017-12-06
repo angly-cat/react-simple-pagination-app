@@ -15,7 +15,7 @@ class Task extends Component {
       <div className='card d-inline-block'>
         <div className='card-img'>
           {task.image_path
-            ? <img className='card-img-top' src={task.image_path} alt='Task'/>
+            ? <img className='card-img-top' src={task.image_path} alt='Task' />
             : <div className='card-img-placeholder'>
               <div className='stripes'>
                 <div className='no-image'><em>No Image</em></div>
@@ -38,7 +38,7 @@ class Task extends Component {
             }
             <h5>
               <span>Done: </span>
-              <input readOnly={true} type='checkbox' checked={task.status === 10}/>
+              <input readOnly={true} type='checkbox' checked={task.status === 10} />
             </h5>
           </div>
           {shouldShowEditButton &&

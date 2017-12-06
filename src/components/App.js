@@ -15,12 +15,12 @@ class App extends Component {
         <Header />
         <ContentWithFlashMessages>
           <Switch>
-            <Redirect exact from='/' to='/list/1'/>
-            <Route exact path='/list/:page' component={TaskList}/>
-            <Route exact path='/create' component={CreateTask}/>
-            <Route exact path='/edit/:taskId' component={EditTask}/>
-            <Route exact path='/login' component={LoginForm}/>
-            <Route component={NotFound}/>
+            <Redirect exact from='/' to='/list/1' />
+            <Route exact path='/list/:page' component={TaskList} />
+            <Route exact path='/create' component={CreateTask} />
+            <Route exact path='/edit/:taskId' component={EditTask} />
+            <Route exact path='/login' component={LoginForm} />
+            <Route component={NotFound} />
           </Switch>
         </ContentWithFlashMessages>
       </div>

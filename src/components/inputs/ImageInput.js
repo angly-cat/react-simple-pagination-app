@@ -14,7 +14,7 @@ const ImageInput = ({ fileIndex, updateImage, disabled, children, required }) =>
           data-field='text'
           onChange={updateImage}
           disabled={disabled}
-          {...required && {required: true}}
+          { ...required && { required: true }}
         />
         {children}
       </div>

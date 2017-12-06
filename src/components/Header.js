@@ -14,7 +14,7 @@ const Header = (props) => {
 
       <div className='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul className='navbar-nav mr-auto'>
-          <NavLink to='/list/1' className='nav-item' isActive={isList}>
+          <NavLink to='/' className='nav-item' isActive={isList}>
             <span className='nav-link'>List</span>
           </NavLink>
           <NavLink exact to='/create' className='nav-item'>

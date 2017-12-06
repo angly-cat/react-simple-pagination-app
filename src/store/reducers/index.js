@@ -7,7 +7,7 @@ import flashMessagesReducer from './flashMessages';
 const rootReducer = combineReducers({
   user: userReducer,
   selectedTask: selectedTaskReducer,
-  flashMessages: flashMessagesReducer,
+  flashMessages: flashMessagesReducer
 });
 
 export default rootReducer;

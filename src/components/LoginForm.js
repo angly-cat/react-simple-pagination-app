@@ -30,8 +30,6 @@ class LoginForm extends Component {
       password: this.state.password
     })
     .then((user) => {
-      const nextRoute = '/list/1';
-
       this.props.addFlashMessage({
         text: 'Signed in successfully!',
         type: 'success',
@@ -40,7 +38,7 @@ class LoginForm extends Component {
 
       this.props.signInUser(user);
 
-      this.props.history.push(nextRoute);
+      this.props.history.push('/');
     })
     .catch((error) => {
       this.props.addFlashMessage({
@@ -63,7 +61,7 @@ class LoginForm extends Component {
         topic: 'userSigning'
       });
 
-      this.props.history.push('/list/1');
+      this.props.history.push('/');
     }
   }
 

@@ -26,7 +26,7 @@ export function createTask({ username, email, text }, imageBlob, imageName) {
 }
 
 export function updateTask({ text, status, id }) {
-  // Hack for allowing whitespaces
+  // Hack for allowing at least whitespaces
   text = text.replace(/ /g, '\t');
 
   let params = [];

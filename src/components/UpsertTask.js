@@ -120,14 +120,12 @@ class UpsertTask extends Component {
       .then(() => {
         window.URL.revokeObjectURL(this.state.task.image_path);
 
-        const nextRoute = '/list/1';
-
         this.props.addFlashMessage({
           text: `Task ${this.props.isEditing ? 'updated' : 'created'} successfully!`,
           type: 'success'
         });
 
-        this.props.history.push(nextRoute);
+        this.props.history.push('/');
       })
       .catch((error) => {
         this.props.addFlashMessage({
@@ -148,14 +146,12 @@ class UpsertTask extends Component {
         !this.props.selectedTask || this.props.selectedTask.id !== +this.props.match.params.taskId
       )
     ) {
-      const nextRoute = '/list/1';
-
       this.props.addFlashMessage({
         text: `Can't find task with id=${this.props.match.params.taskId} in cache.`,
         type: 'warning'
       });
 
-      this.props.history.push(nextRoute);
+      this.props.history.push('/');
     }
   }
 
