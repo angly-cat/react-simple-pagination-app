@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TaskForm from './TaskForm';
 import Task from './Task';
-import { createTask } from '../api';
+import { createTask, updateTask } from '../api';
 
 const MAX_IMAGE_WIDTH = 320;
 const MAX_IMAGE_HEIGHT = 240;
@@ -114,14 +114,16 @@ class UpsertTask extends Component {
       isUpserting: true
     });
 
-    createTask(this.state.task, this.state.imageBlob, this.state.imageName)
+    (this.props.isEditing
+      ? updateTask(this.state.task)
+      : createTask(this.state.task, this.state.imageBlob, this.state.imageName))
       .then(() => {
         window.URL.revokeObjectURL(this.state.task.image_path);
 
         const nextRoute = '/list/1';
 
         this.context.flash({
-          text: 'Task created successfully!',
+          text: `Task ${this.props.isEditing ? 'updated' : 'created'} successfully!`,
           type: 'success',
           actualOnPattern: nextRoute
         });
@@ -132,7 +134,7 @@ class UpsertTask extends Component {
         this.context.flash({
           text: JSON.stringify(error.message || error),
           type: 'danger',
-          topic: 'errorOnCreation',
+          topic: this.props.isEditing ? 'errorOnEditing' : 'errorOnCreation',
           actualOnPattern: this.props.location.pathname
         });
 
@@ -144,11 +146,12 @@ class UpsertTask extends Component {
 
   componentWillMount() {
     if (
-      this.props.location.pathname.match(/^\/edit\//) && (
+      this.props.isEditing && (
         !this.props.selectedTask || this.props.selectedTask.id !== +this.props.match.params.taskId
       )
     ) {
       const nextRoute = '/list/1';
+
       this.context.flash({
         text: `Can't find task with id=${this.props.match.params.taskId} in cache.`,
         type: 'warning',
@@ -190,9 +193,10 @@ UpsertTask.contextTypes = {
   flash: PropTypes.func
 };
 
-const mapStateToProps = ({ selectedTask }) => {
+const mapStateToProps = ({ selectedTask }, { location }) => {
   return {
-    selectedTask
+    selectedTask,
+    isEditing: location.pathname.match(/^\/edit\//)
   };
 };
 

@@ -10,8 +10,7 @@ class Task extends Component {
   };
 
   render() {
-    const { task, user, location } = this.props;
-    const isEditAllowed = user && !location.pathname.match(/^\/edit\//);
+    const { task, shouldShowEditButton } = this.props;
     return (
       <div className='card d-inline-block'>
         <div className='card-img'>
@@ -25,7 +24,7 @@ class Task extends Component {
           }
         </div>
         <div className='card-body'>
-          <h4 className='card-title'>{task.text || <em>No text specified</em>}</h4>
+          <h4 className='card-title'>{task.text.replace(/\t/g, ' ') || <em>No text specified</em>}</h4>
           <div className='card-text'>
             {task.username
               ? <h5>
@@ -42,7 +41,7 @@ class Task extends Component {
               <input readOnly={true} type='checkbox' checked={task.status === 10}/>
             </h5>
           </div>
-          {isEditAllowed &&
+          {shouldShowEditButton &&
             <Link to={`/edit/${task.id}`} onClick={this.handleEditClick} className='btn btn-primary'>Edit</Link>
           }
         </div>
@@ -51,15 +50,16 @@ class Task extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user }, { location }) => {
   return {
-    user
+    shouldShowEditButton: user && !location.pathname.match(/^\/edit\//)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSelectedTask: (task) => dispatch(setSelectedTask(task))
+    // Hack of backend bug for using whitespaces
+    setSelectedTask: (task) => dispatch(setSelectedTask({ ...task, text: task.text.replace(/\t/g, ' ') }))
   };
 };
 

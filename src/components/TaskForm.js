@@ -6,8 +6,8 @@ import blueLoader from '../images/blue-loader.gif';
 
 class TaskForm extends Component {
   renderResetButton = (fieldName, wrapperClassName) => {
-    const shouldBeShown = this.props.originalTask && this.props.originalTask[fieldName] !== this.props.task[fieldName];
-    return shouldBeShown && (
+    const shouldBeRendered = this.props.originalTask && this.props.originalTask[fieldName] !== this.props.task[fieldName];
+    return shouldBeRendered && (
       <span key={fieldName} className={wrapperClassName}>
         <button
           className='btn btn-secondary'
@@ -23,17 +23,20 @@ class TaskForm extends Component {
 
   render() {
     const { fileIndex, isBusy, originalTask, task, updateImage, updateStatus, updateTextField, upsertTask } = this.props;
+    const isEditing = !!originalTask;
     return (
       <form onSubmit={upsertTask}>
+        {!isEditing &&
         <ImageInput
           updateImage={updateImage}
           fileIndex={fileIndex}
           disabled={isBusy}
-          required={!originalTask}
+          required={true}
         >
           {this.renderResetButton('image_path', 'input-group-btn')}
         </ImageInput>
-        {['text', 'username', 'email'].map((fieldName) => (
+        }
+        {['text', ...!isEditing && ['username', 'email']].map((fieldName) => (
           <TextInput
             key={fieldName}
             fieldName={fieldName}
@@ -45,7 +48,7 @@ class TaskForm extends Component {
             {this.renderResetButton(fieldName, 'input-group-btn')}
           </TextInput>
         ))}
-        {originalTask &&
+        {isEditing &&
           <StatusInput
             status={task.status}
             updateStatus={updateStatus}

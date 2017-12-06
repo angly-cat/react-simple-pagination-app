@@ -1,4 +1,6 @@
 import { getAllTasksUrl, CREATE_TASK_URL, getEditTaskUrlById } from './urls';
+import { EDIT_TOKEN } from '../constants';
+const md5 = require('../md5');
 
 export function createTask({ username, email, text }, imageBlob, imageName) {
   const form = new FormData();
@@ -21,6 +23,38 @@ export function createTask({ username, email, text }, imageBlob, imageName) {
         return responseJSON;
       }
     });
+}
+
+export function updateTask({ text, status, id }) {
+  // Hack for allowing whitespaces
+  text = text.replace(/ /g, '\t');
+
+  let params = [];
+  params.push(`text=${encodeURIComponent(text)}`);
+  params.push(`status=${status}`);
+  params = params.sort();
+  params.push(`token=${EDIT_TOKEN}`);
+  const params_string = params.join('&');
+  const signature = md5(params_string);
+
+  const form = new FormData();
+  form.append('text', text);
+  form.append('status', status);
+  form.append('token', EDIT_TOKEN);
+  form.append('signature', signature);
+
+  return fetch(getEditTaskUrlById(id), {
+    method: 'POST',
+    body: form
+  })
+  .then((res) => res.json())
+  .then((responseJSON) => {
+    if (responseJSON.status === 'error') {
+      throw responseJSON;
+    } else {
+      return responseJSON;
+    }
+  });
 }
 
 export function getTasks({ page } = { page: 1 }) {
