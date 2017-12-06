@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import TaskForm from './TaskForm';
 import Task from './Task';
-import { createTask } from '../api/api';
+import { createTask } from '../api';
 
 const MAX_IMAGE_WIDTH = 320;
 const MAX_IMAGE_HEIGHT = 240;
@@ -19,9 +21,8 @@ class UpsertTask extends Component {
   state = {
     task: {
       ...emptyTask,
-      //...originalTask
+      ...this.props.selectedTask
     },
-    //originalTask: null,
     imageName: null,
     imageBlob: null,
     fileIndex: 0,
@@ -99,7 +100,7 @@ class UpsertTask extends Component {
       return {
         task: {
           ...prevState.task,
-          [target.dataset.fieldName]: prevState.originalTask[target.dataset.fieldName]
+          [target.dataset.fieldName]: this.props.selectedTask[target.dataset.fieldName]
         },
         ...(target.dataset.fieldName === 'image_path' && {fileIndex: prevState.fileIndex + 1})
       };
@@ -117,20 +118,22 @@ class UpsertTask extends Component {
       .then(() => {
         window.URL.revokeObjectURL(this.state.task.image_path);
 
+        const nextRoute = '/list/1';
+
         this.context.flash({
           text: 'Task created successfully!',
           type: 'success',
-          actualOnPattern: /\/list\/1/
+          actualOnPattern: nextRoute
         });
 
-        this.props.history.push('/list/1');
+        this.props.history.push(nextRoute);
       })
       .catch((error) => {
         this.context.flash({
           text: JSON.stringify(error.message || error),
           type: 'danger',
           topic: 'errorOnCreation',
-          actualOnPattern: /\/create/
+          actualOnPattern: this.props.location.pathname
         });
 
         this.setState({
@@ -139,17 +142,34 @@ class UpsertTask extends Component {
       });
   };
 
+  componentWillMount() {
+    if (
+      this.props.location.pathname.match(/^\/edit\//) && (
+        !this.props.selectedTask || this.props.selectedTask.id !== +this.props.match.params.taskId
+      )
+    ) {
+      const nextRoute = '/list/1';
+      this.context.flash({
+        text: `Can't find task with id=${this.props.match.params.taskId} in cache.`,
+        type: 'warning',
+        actualOnPattern: nextRoute
+      });
+
+      this.props.history.push(nextRoute);
+    }
+  }
+
   render() {
     return (
       <div>
-        <h1 className='text-center'>Task Creation</h1>
+        <h1 className='text-center'>{this.props.selectedTask ? 'Task Editing' : 'Task Creation'}</h1>
         <div className='row'>
           <div className='col'>
             <TaskForm
               upsertTask={this.upsertTask}
               task={this.state.task}
               fileIndex={this.state.fileIndex}
-              originalTask={this.state.originalTask}
+              originalTask={this.props.selectedTask}
               updateTextField={this.updateTextField}
               updateStatus={this.updateStatus}
               updateImage={this.updateImage}
@@ -170,4 +190,10 @@ UpsertTask.contextTypes = {
   flash: PropTypes.func
 };
 
-export default UpsertTask;
+const mapStateToProps = ({ selectedTask }) => {
+  return {
+    selectedTask
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(UpsertTask));

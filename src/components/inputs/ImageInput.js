@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ImageInput = ({ fileIndex, updateImage, disabled, children }) => {
+const ImageInput = ({ fileIndex, updateImage, disabled, children, required }) => {
   return (
     <div className='form-group'>
       <label htmlFor='image-input'>Image</label>
@@ -14,7 +14,7 @@ const ImageInput = ({ fileIndex, updateImage, disabled, children }) => {
           data-field='text'
           onChange={updateImage}
           disabled={disabled}
-          required
+          {...required && {required: true}}
         />
         {children}
       </div>

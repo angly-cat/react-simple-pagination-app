@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import TextInput from './inputs/TextInput';
-import { login } from '../api/api';
+import { login } from '../api/index';
 import blueLoader from '../images/blue-loader.gif';
-import PropTypes from "prop-types";
+import { signInUser } from '../store/actions/creators';
 
 class LoginForm extends Component {
   state = {
@@ -29,20 +31,25 @@ class LoginForm extends Component {
       password: this.state.password
     })
     .then((user) => {
+      const nextRoute = '/list/1';
+
       this.context.flash({
         text: 'Signed in successfully!',
         type: 'success',
-        actualOnPattern: /\/list\/1/
+        topic: 'userSigning',
+        actualOnPattern: nextRoute
       });
 
-      this.props.history.push('/list/1');
+      this.props.signInUser(user);
+
+      this.props.history.push(nextRoute);
     })
     .catch((error) => {
       this.context.flash({
         text: error,
         type: 'danger',
         topic: 'invalidCredentials',
-        actualOnPattern: /\/login/
+        actualOnPattern: this.props.location.pathname
       });
 
       this.setState({
@@ -50,6 +57,21 @@ class LoginForm extends Component {
       });
     });
   };
+
+  componentWillMount() {
+    if (this.props.user) {
+      const nextRoute = '/list/1';
+
+      this.context.flash({
+        text: 'User is already signed in!',
+        type: 'info',
+        topic: 'userSigning',
+        actualOnPattern: nextRoute
+      });
+
+      this.props.history.push(nextRoute);
+    }
+  }
 
   render() {
     const { username, password, isBusy } = this.state;
@@ -83,4 +105,16 @@ LoginForm.contextTypes = {
   flash: PropTypes.func
 };
 
-export default LoginForm;
+const mapStateToProps = ({ user }) => {
+  return {
+    user
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signInUser: (user) => dispatch(signInUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

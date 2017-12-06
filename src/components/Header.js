@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import LogoutButton from './LogoutButton';
 
 const Header = (props) => {
   return (
@@ -18,13 +20,22 @@ const Header = (props) => {
           </NavLink>
         </ul>
         <ul className='navbar-nav my-2 my-lg-0'>
-          <NavLink exact to='/login' className='nav-item'>
-            <span className='nav-link'>Login</span>
-          </NavLink>
+          {props.user
+            ? <LogoutButton />
+            : <NavLink exact to='/login' className='nav-item'>
+                <span className='nav-link'>Login</span>
+              </NavLink>
+          }
         </ul>
       </div>
     </nav>
   );
 };
 
-export default Header;
+const mapStateToProps = ({ user }) => {
+  return {
+    user
+  };
+};
+
+export default connect(mapStateToProps)(Header);

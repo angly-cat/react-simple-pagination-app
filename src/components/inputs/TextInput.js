@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextInput = ({ fieldName, fieldValue, updateTextField, disabled, children }) => {
+const TextInput = ({ fieldName, fieldValue, updateTextField, disabled, children, required }) => {
   const fieldNameWithCapital = `${fieldName[0].toUpperCase()}${fieldName.slice(1)}`;
   return (
     <div className='form-group'>
@@ -15,7 +15,7 @@ const TextInput = ({ fieldName, fieldValue, updateTextField, disabled, children 
           value={fieldValue}
           onChange={updateTextField}
           disabled={disabled}
-          required
+          {...required && {required: true}}
         />
         {children}
       </div>

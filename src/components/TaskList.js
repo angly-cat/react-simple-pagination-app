@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Task from './Task';
 import Pagination from './Pagination';
 import { withRouter } from 'react-router-dom';
-import { getTasks } from '../api/api';
+import { getTasks } from '../api';
 import bigWhiteLoader from '../images/big-white-loader.gif';
 
 const MAX_TASKS_PER_PAGE = 3;

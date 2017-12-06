@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-class ContentWithFlashMessages extends Component {
+class FlashMessagesProvider extends Component {
   state = {
     messages: [],
     lastMessageId: -1
@@ -12,11 +12,14 @@ class ContentWithFlashMessages extends Component {
     super();
 
     this.flash = this.flash.bind(this);
+    this.closeMessage = this.closeMessage.bind(this);
   }
 
   getChildContext() {
     return {
-      flash: this.flash
+      flash: this.flash,
+      flashMessages: this.state.messages,
+      closeFlashMessage: this.closeMessage
     };
   }
 
@@ -60,24 +63,13 @@ class ContentWithFlashMessages extends Component {
   }
 
   render() {
-    return (
-      <main className='container'>
-        <div>
-          {this.state.messages.map((message) =>
-            <div key={message.id} className={`alert alert-${message.type} alert-dismissible fade show`}>
-              {message.text}
-              <button type='button' className='close' data-id={message.id} onClick={this.closeMessage}>
-                <span>&times;</span>
-              </button>
-            </div>)}
-        </div>
-        {this.props.children}
-      </main>
-    );
+    return this.props.children;
   }
 }
-ContentWithFlashMessages.childContextTypes = {
-  flash: PropTypes.func
+FlashMessagesProvider.childContextTypes = {
+  flash: PropTypes.func,
+  flashMessages: PropTypes.array,
+  closeFlashMessage: PropTypes.func
 };
 
-export default withRouter(ContentWithFlashMessages);
+export default withRouter(FlashMessagesProvider);

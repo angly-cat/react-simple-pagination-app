@@ -29,6 +29,7 @@ class TaskForm extends Component {
           updateImage={updateImage}
           fileIndex={fileIndex}
           disabled={isBusy}
+          required={!originalTask}
         >
           {this.renderResetButton('image_path', 'input-group-btn')}
         </ImageInput>
@@ -39,6 +40,7 @@ class TaskForm extends Component {
             fieldValue={task[fieldName]}
             updateTextField={updateTextField}
             disabled={isBusy}
+            required={true}
           >
             {this.renderResetButton(fieldName, 'input-group-btn')}
           </TextInput>
